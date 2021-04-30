@@ -12,7 +12,7 @@ const program = async () => {
   const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: ''
+    password: 'root'
   });
 
   const instance = new MySQLEvents(connection, {
@@ -23,9 +23,13 @@ const program = async () => {
 
   instance.addTrigger({
     name: 'monitoring all statments',
-    expression: 'staff.*', // listen to TEST database !!!
+    expression: 'smartbot.*', // listen to TEST database !!!
     statement: MySQLEvents.STATEMENTS.ALL, // you can choose only insert for example MySQLEvents.STATEMENTS.INSERT, but here we are choosing everything
     onEvent: e => {
+      delete e.affectedColumns;
+      delete e.binlogName;
+      delete e.nextPosition;
+      delete e.nextPosition;
       console.log(util.inspect(e, false, null, true /* enable colors */));
       spinner.succeed('👽 _EVENT_ 👽');
       spinner.start();
